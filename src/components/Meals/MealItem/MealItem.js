@@ -10,7 +10,7 @@ export default function MealItem({meal}){
         <div className={styles.price}>${meal.price.toFixed(2)}</div>
       </div>
       <div>
-        <MealItemForm/>
+        <MealItemForm id={meal.id}/>
       </div>
     </li>
   );
