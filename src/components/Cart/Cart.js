@@ -1,4 +1,5 @@
 import styles from './Cart.module.css';
+import Modal from '../UI/Modal';
 
 const DUMMY_MEALS = [
   {
@@ -30,14 +31,14 @@ const DUMMY_MEALS = [
     qty: 1
   },
 ];
-export default function Cart(){
+export default function Cart({onHideCart}){
   const renderedItems = DUMMY_MEALS.map((item) => {
     return(
       <li key={item.id}>{item.name}</li>
     );
   })
   return(
-    <div>
+    <Modal onHideCart={onHideCart}>
       <ul className={styles['cart-items']}>
         {renderedItems}
       </ul>
@@ -45,13 +46,13 @@ export default function Cart(){
         <span>Total Amount</span>
       </div>
       <div className={styles.actions}>
-        <button className={styles['button--alt']}>
+        <button className={styles['button--alt']} onClick={onHideCart}>
           Close
         </button>
         <button className={styles.button}>
           Order
         </button>
       </div>
-    </div>
+    </Modal>
   );
 }
