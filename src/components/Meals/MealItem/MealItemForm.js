@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 
 import styles from './MealItemForm.module.css';
-import Input from '../../UI/Input';
+import Input from '../../UI/Input/Input';
 
 export default function MealItemForm({onAddToCart, id}){
   const [amountIsValid, setAmountIsValid] = useState(true);

@@ -7,6 +7,7 @@ import Meals from './components/Meals/Meals';
 import Cart from './components/Cart/Cart';
 
 import CartProvider from './store/CartProvider';
+import { LoginContextProvider } from './store/loginContext';
 
 export default function App(){
   const [isCartVisible, setIsCartVisible] = useState(false);
@@ -20,14 +21,16 @@ export default function App(){
   }
 
   return(
-    <CartProvider>
-      {isCartVisible && <Cart onHideCart={hideCartHandler}/>}
-      <Header
-        onShowCart={showCartHandler}
-      />
-      <main>
-        <Meals/>
-      </main>
-    </CartProvider>
+    <LoginContextProvider>
+      <CartProvider>
+        {isCartVisible && <Cart onHide={hideCartHandler}/>}
+        <Header
+          onShowCart={showCartHandler}
+        />
+        <main>
+          <Meals/>
+        </main>
+      </CartProvider>
+    </LoginContextProvider>
   );
 }

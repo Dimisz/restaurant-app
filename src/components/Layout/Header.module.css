@@ -39,3 +39,51 @@
   height: 1.35rem;
   margin-right: 0.5rem;
 }
+
+
+ .login-button {
+  cursor: pointer;
+  font: inherit;
+  border: none;
+  background-color: #093627;
+  color: white;
+  padding: 0.75rem 3rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 25px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+.login-button:hover,
+.login-button:active {
+  background-color: #eee;
+  color: #093627;
+}
+
+.login-button span {
+  padding: 0.25rem;
+}
+
+.bump {
+  animation: bump 300ms ease-out;
+}
+
+@keyframes bump {
+  0% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(0.9);
+  }
+  30% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
