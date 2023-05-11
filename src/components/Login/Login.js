@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useReducer } from 'react';
 import LoginContext from '../../store/loginContext';
 import Card from '../UI/Card/Card';
 import Button from '../UI/Button/Button';
+import Modal from '../UI/Modal/Modal';
 import styles from './Login.module.css';
 
 
@@ -100,43 +101,46 @@ const Login = () => {
   };
 
   return (
-    <Card className={styles.login}>
-      <form onSubmit={submitHandler}>
-        <div
-          className={`${styles.control} ${
-            state.emailIsValid === false ? styles.invalid : ''
-          }`}
-        >
-          <label htmlFor="email">E-Mail</label>
-          <input
-            type="email"
-            id="email"
-            value={state.enteredEmail}
-            onChange={emailChangeHandler}
-            onBlur={validateEmailHandler}
-          />
-        </div>
-        <div
-          className={`${styles.control} ${
-            state.passwordIsValid === false ? styles.invalid : ''
-          }`}
-        >
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={state.enteredPassword}
-            onChange={passwordChangeHandler}
-            onBlur={validatePasswordHandler}
-          />
-        </div>
-        <div className={styles.actions}>
-          <Button type="submit" className={styles.btn} disabled={!styles.formIsValid}>
-            Login
-          </Button>
-        </div>
-      </form>
-    </Card>
+    <Modal onHide={ctx.onHideLoginForm}>
+        <form onSubmit={submitHandler}>
+          <div
+            className={`${styles.control} ${
+              state.emailIsValid === false ? styles.invalid : ''
+            }`}
+          >
+            <label htmlFor="email">E-Mail</label>
+            <input
+              type="email"
+              id="email"
+              value={state.enteredEmail}
+              onChange={emailChangeHandler}
+              onBlur={validateEmailHandler}
+            />
+          </div>
+          <div
+            className={`${styles.control} ${
+              state.passwordIsValid === false ? styles.invalid : ''
+            }`}
+          >
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              value={state.enteredPassword}
+              onChange={passwordChangeHandler}
+              onBlur={validatePasswordHandler}
+            />
+          </div>
+          <div className={styles.actions}>
+            <Button 
+              type="submit" 
+              // className={styles.btn} 
+              disabled={!state.formIsValid}>
+              Login
+            </Button>
+          </div>
+        </form>
+    </Modal>
   );
 };
 

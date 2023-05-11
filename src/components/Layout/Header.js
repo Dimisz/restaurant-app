@@ -6,10 +6,12 @@ import heroImage from '../../assets/food/food5.jpeg';
 import HeaderCartButton from './HeaderCartButton';
 import Button from '../UI/Button/Button';
 
+import Login from '../Login/Login';
 import LoginContext from '../../store/loginContext';
 
 export default function Header({onShowCart}){
   const ctx = useContext(LoginContext);
+
   return(
     <>
       <header className={styles.header}>
@@ -34,10 +36,13 @@ export default function Header({onShowCart}){
           :
           <Button 
             // className={styles['login-button']}
-            onClick={ctx.onLogin}
+            onClick={ctx.onDisplayLoginForm}
           >
             <span>Login</span>
           </Button>
+        }
+        {
+          ctx.isLoginFormDisplayed && <Login />
         }
       </header>
       <div className={styles['hero-image']}>
