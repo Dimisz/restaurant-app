@@ -6,7 +6,6 @@ import Button from '../UI/Button/Button';
 import Modal from '../UI/Modal/Modal';
 import styles from './Login.module.css';
 
-
 const CHANGE_EMAIL_VALUE = 'change-email-value';
 const CHECK_EMAIL_VALIDITY ='check-email-vality';
 const CHANGE_PASSWORD_VALUE = 'change-password-value';

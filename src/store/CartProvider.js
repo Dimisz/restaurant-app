@@ -3,6 +3,8 @@ import { useReducer } from "react";
 import CartContext from "./cartContext";
 
 const ADD_ITEM = 'ADD_ITEM';
+const REMOVE_ITEM = 'REMOVE_ITEM';
+
 const defaultCartState = {
   items: [],
   totalAmount: 0
@@ -10,9 +12,44 @@ const defaultCartState = {
 
 const cartReducer = (state, action) => {
   if(action.type === ADD_ITEM){
-    return {  
-      items: [...state.items, action.payload],
-      totalAmount: state.totalAmount + (action.payload.price * action.payload.amount)
+    const [ existingItem ] = state.items.filter(({id}) => id === action.payload.id);
+    if(existingItem){
+      const remainingItems = state.items.filter(({id}) => id !== action.payload.id);
+      const newItem = {...existingItem, amount: existingItem.amount + 1};
+
+      return {
+        items: [...remainingItems, newItem],
+        totalAmount: state.totalAmount + (action.payload.price)
+      }
+    }
+    else {
+      return {
+        items: [...state.items, action.payload],
+        totalAmount: state.totalAmount + (action.payload.price)
+      }
+    }
+  }
+
+  else if(action.type === REMOVE_ITEM){
+    const [ existingItem ] = state.items.filter(({id}) => id === action.payload.id);
+    if(existingItem){
+      const remainingItems = state.items.filter(({id}) => id !== action.payload.id);
+      if(existingItem.amount === 1){
+        return {
+          items: [...remainingItems],
+          totalAmount: state.totalAmount - (action.payload.price)
+        }
+      }
+      else {
+        const newItem = {...existingItem, amount: existingItem.amount - 1};
+        return {
+          items: [...remainingItems, newItem],
+          totalAmount: state.totalAmount - (action.payload.price)
+        }
+      }
+    }
+    else {
+      return state;
     }
   }
   return state;
@@ -22,6 +59,7 @@ const cartReducer = (state, action) => {
 
 export default function CartProvider(props){
   const [cartState, dispatchCartAction] = useReducer(cartReducer, defaultCartState);
+  // console.log(cartState);
 
   const addItemToCart = (item) => {
     dispatchCartAction({
@@ -29,13 +67,19 @@ export default function CartProvider(props){
       payload: item
     });
   };
-  const removeItemFromCart = (id) => {};
+
+  const removeItemFromCart = (item) => {
+    dispatchCartAction({
+      type: REMOVE_ITEM,
+      payload: item
+    });
+  };
 
   const cartContext = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
-    addItem: addItemToCart,
-    removeItem: removeItemFromCart,
+    addItemToCart: addItemToCart,
+    removeItemFromCart: removeItemFromCart,
     openCart: () => {},
     closeCart: () => {}
   }

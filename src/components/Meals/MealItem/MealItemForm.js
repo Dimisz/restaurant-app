@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import styles from './MealItemForm.module.css';
 import Input from '../../UI/Input/Input';
 
-export default function MealItemForm({onAddToCart, id}){
+export default function MealItemForm({addToCart, id}){
   const [amountIsValid, setAmountIsValid] = useState(true);
 
   const amountInputRef = useRef();
@@ -20,7 +20,7 @@ export default function MealItemForm({onAddToCart, id}){
       return;
     }
 
-    onAddToCart(enteredNumber);
+    addToCart(enteredNumber);
   }
 
   return(

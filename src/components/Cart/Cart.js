@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import styles from './Cart.module.css';
 import Modal from '../UI/Modal/Modal';
 import CartContext from '../../store/cartContext';
+import CartItem from './CartItem/CartItem';
 
 const DUMMY_MEALS = [
   {
@@ -34,13 +35,20 @@ const DUMMY_MEALS = [
     qty: 1
   },
 ];
+
 export default function Cart({onHide}){
   const cartCtx = useContext(CartContext);
 
-  const totalAmount = `cartCtx.totalAmount.toFixed(2)`;
+  const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
+  const hasItems = cartCtx.items.length > 0;
+
+
   const renderedItems = cartCtx.items.map((item) => {
     return(
-      <li key={item.id}>{item.name}</li>
+      <CartItem 
+        key={item.id} 
+        item={item}
+      />
     );
   });
 
@@ -51,14 +59,17 @@ export default function Cart({onHide}){
       </ul>
       <div className={styles.total}>
         <span>Total Amount</span>
+        <span>{totalAmount}</span>
       </div>
       <div className={styles.actions}>
         <button className={styles['button--alt']} onClick={onHide}>
           Close
         </button>
-        <button className={styles.button}>
-          Order
-        </button>
+        {hasItems && 
+          (<button className={styles.button}>
+            Order
+          </button>)
+        }
       </div>
     </Modal>
   );

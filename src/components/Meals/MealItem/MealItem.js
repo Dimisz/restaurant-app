@@ -9,8 +9,9 @@ export default function MealItem({meal}){
   const cartCtx = useContext(CartContext);
   const loginCtx = useContext(LoginContext);
 
-  const addToCartHandler = (amount) => {
-    cartCtx.addItem({
+
+  const addToCart = (amount) => {
+    cartCtx.addItemToCart({
       id: meal.id,
       name: meal.name,
       amount: amount,
@@ -36,7 +37,7 @@ export default function MealItem({meal}){
       {
         loginCtx.isLoggedIn &&
           <div>
-            <MealItemForm onAddToCart={addToCartHandler} id={meal.id}/>
+            <MealItemForm addToCart={addToCart} id={meal.id}/>
           </div>
       }
       
