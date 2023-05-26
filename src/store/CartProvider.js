@@ -2,8 +2,9 @@ import { useReducer } from "react";
 
 import CartContext from "./cartContext";
 
-const ADD_ITEM = 'ADD_ITEM';
-const REMOVE_ITEM = 'REMOVE_ITEM';
+const ADD_ONE_ITEM = 'ADD_ONE_ITEM';
+const REMOVE_ONE_ITEM = 'REMOVE_ONE_ITEM';
+const ADD_ONE_OR_MORE_ITEMS = 'ADD_ONE_OR_MORE_ITEMS';
 
 const defaultCartState = {
   items: [],
@@ -11,7 +12,27 @@ const defaultCartState = {
 }
 
 const cartReducer = (state, action) => {
-  if(action.type === ADD_ITEM){
+  if(action.type === ADD_ONE_OR_MORE_ITEMS){
+    const [ existingItem ] = state.items.filter(({id}) => id === action.payload.id);
+    if(action.payload.amount > 0){ 
+      if(existingItem){
+        const remainingItems = state.items.filter(({id}) => id !== action.payload.id);
+        const newItem = {...existingItem, amount: existingItem.amount + 1};
+
+        return {
+          items: [...remainingItems, newItem],
+          totalAmount: state.totalAmount + (action.payload.price * action.payload.amount)
+        }
+      }
+      else {
+        return {
+          items: [...state.items, action.payload],
+          totalAmount: state.totalAmount + (action.payload.price * action.payload.amount)
+        }
+      }
+    }
+  }
+  else if(action.type === ADD_ONE_ITEM){
     const [ existingItem ] = state.items.filter(({id}) => id === action.payload.id);
     if(existingItem){
       const remainingItems = state.items.filter(({id}) => id !== action.payload.id);
@@ -30,7 +51,7 @@ const cartReducer = (state, action) => {
     }
   }
 
-  else if(action.type === REMOVE_ITEM){
+  else if(action.type === REMOVE_ONE_ITEM){
     const [ existingItem ] = state.items.filter(({id}) => id === action.payload.id);
     if(existingItem){
       const remainingItems = state.items.filter(({id}) => id !== action.payload.id);
@@ -61,16 +82,23 @@ export default function CartProvider(props){
   const [cartState, dispatchCartAction] = useReducer(cartReducer, defaultCartState);
   // console.log(cartState);
 
-  const addItemToCart = (item) => {
+  const addOneOrMoreItemsToCart = (item) => {
     dispatchCartAction({
-      type: ADD_ITEM,
+      type: ADD_ONE_OR_MORE_ITEMS,
       payload: item
     });
   };
 
-  const removeItemFromCart = (item) => {
+  const addOneItemToCart = (item) => {
     dispatchCartAction({
-      type: REMOVE_ITEM,
+      type: ADD_ONE_ITEM,
+      payload: item
+    });
+  };
+
+  const removeOneItemFromCart = (item) => {
+    dispatchCartAction({
+      type: REMOVE_ONE_ITEM,
       payload: item
     });
   };
@@ -78,8 +106,9 @@ export default function CartProvider(props){
   const cartContext = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
-    addItemToCart: addItemToCart,
-    removeItemFromCart: removeItemFromCart,
+    addOneOrMoreItemsToCart: addOneOrMoreItemsToCart,
+    removeOneItemFromCart: removeOneItemFromCart,
+    addOneItemToCart: addOneItemToCart,
     openCart: () => {},
     closeCart: () => {}
   }

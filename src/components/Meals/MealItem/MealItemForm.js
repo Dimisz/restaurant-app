@@ -1,43 +1,48 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import styles from './MealItemForm.module.css';
-import Input from '../../UI/Input/Input';
 
 export default function MealItemForm({addToCart, id}){
   const [amountIsValid, setAmountIsValid] = useState(true);
+  const [enteredValue, setEneteredValue] = useState('');
 
-  const amountInputRef = useRef();
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-
-    const enteredAmount = amountInputRef.current.value;
-    const enteredNumber = Number(enteredAmount);
-    if(enteredAmount.trim().length === 0 
+  const checkInputValid = (value) => {
+    const enteredNumber = Number(value);
+    if(value.trim().length === 0 
       || enteredNumber > 5 
       || enteredNumber < 0){
       setAmountIsValid(false);
-      return;
     }
+    else {
+      setAmountIsValid(true);
+    }
+  }
 
-    addToCart(enteredNumber);
+  const changeHandler = (e) => {
+    // console.log('checking input');
+    checkInputValid(e.target.value);
+    setEneteredValue(e.target.value);
+  }
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if(amountIsValid){
+      addToCart(Number(enteredValue));
+      setEneteredValue('');
+    }
   }
 
   return(
     <form className={styles.form} onSubmit={submitHandler}>
-      <Input 
-        ref={amountInputRef}
-        label='Amount'
-        input={{
-          id: `amount_${id}`,
-          type: 'number',
-          min: '1',
-          max: '5',
-          step: '1',
-          defaultValue: '1'
-        }}
+      <input 
+        type='number'
+        min='1'
+        max='5'
+        step='1'
+        value={enteredValue}
+        onChange={changeHandler}
       />
-      <button>Add</button>
+      <button disabled={!amountIsValid}>Add</button>
       {!amountIsValid && <p>Please enter a valid amount</p>}
     </form>
   );
