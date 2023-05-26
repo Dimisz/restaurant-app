@@ -36,7 +36,7 @@ const DUMMY_MEALS = [
   },
 ];
 
-export default function Cart({onHide}){
+const Cart = ({onHide}) => {
   const cartCtx = useContext(CartContext);
 
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
@@ -74,3 +74,5 @@ export default function Cart({onHide}){
     </Modal>
   );
 }
+
+export default Cart;

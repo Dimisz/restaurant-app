@@ -11,7 +11,7 @@ export default function MealItem({meal}){
 
 
   const addToCart = (amount) => {
-    cartCtx.addOneOrMoreItemsToCart({
+    cartCtx.addItemToCart({
       id: meal.id,
       name: meal.name,
       amount: amount,

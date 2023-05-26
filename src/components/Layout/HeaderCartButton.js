@@ -20,7 +20,12 @@ export default function HeaderCartButton({onShowCart}){
       return;
     }
     setButtonIsAnimated(true);
-    setTimeout(() => setButtonIsAnimated(false), 300);
+    const timerId = setTimeout(() => setButtonIsAnimated(false), 300);
+    
+    return () => {
+      clearTimeout(timerId);
+    };
+
   }, [cartCtx.items]);
 
   return(
