@@ -1,46 +1,54 @@
+import { useEffect, useState } from 'react';
 import styles from './AvailableMeals.module.css';
 import Card from '../UI/Card/Card';
 import MealItem from './MealItem/MealItem';
-const DUMMY_MEALS = [
-  {
-    id: 'm1',
-    name: 'Sushi',
-    description: 'Finest fish and veggies',
-    price: 22.99,
-  },
-  {
-    id: 'm2',
-    name: 'Schnitzel',
-    description: 'A german specialty!',
-    price: 16.5,
-  },
-  {
-    id: 'm3',
-    name: 'Barbecue Burger',
-    description: 'American, raw, meaty',
-    price: 12.99,
-  },
-  {
-    id: 'm4',
-    name: 'Green Bowl',
-    description: 'Healthy...and green...',
-    price: 18.99,
-  },
-];
 
 export default function AvailableMeals(){
-  const renderedMeals = DUMMY_MEALS.map((meal) => {
+  const [meals, setMeals] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  
+  useEffect(() => {
+    setIsLoading(true);
+    // console.log('start loading');
+    fetch('https://react-restaurant-app-d1d55-default-rtdb.firebaseio.com/meals.json')
+    .then((res) => res.json())
+    .then((data) => {
+      const mealsData = [];
+      for(let key in data){
+        mealsData.push({
+          id: key,
+          name: data[key].name,
+          description: data[key].description,
+          price: data[key].price
+        });
+      }
+      setMeals(mealsData);
+      
+      setIsLoading(false);
+      // console.log('end loading');
+    })
+    .catch((e) => console.log(e));
+  },[])
+
+  const renderedMeals = meals.map((meal) => {
     return <MealItem key={meal.id} meal={meal} />;
   });
-
+  
   return(
-    <section className={styles.meals}>
-      <Card>
-        <ul>
-          {renderedMeals}
-        </ul>
-      </Card>
-    </section>
-
+    <>
+    {isLoading
+      ?
+      <section className={styles.spinner}></section>
+      :
+      <section className={styles.meals}>
+          <Card>
+          <ul>
+            {renderedMeals}
+          </ul>
+        </Card>
+      </section>
+    }
+    </>
   );
 }

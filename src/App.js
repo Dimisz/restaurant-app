@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+import Menu from 'restaurant-menu';
 
 import './App.css';
 import Header from './components/Layout/Header';
@@ -18,6 +20,10 @@ export default function App(){
     if(storedLoggedInValue === '1'){
       setIsLoggedIn(true);
     }
+  }, []);
+
+  useEffect(() => {
+    console.log(Menu);
   }, []);
 
   const loginHandler = (email, password) => {
