@@ -4,8 +4,8 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin: 1rem 0;
-  /* height: 19rem; */
+  /* margin: 1rem 0; */
+  min-height: 19rem;
   overflow: hidden;
 }
 

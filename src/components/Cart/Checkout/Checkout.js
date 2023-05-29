@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import styles from './Checkout.module.css';
 import CheckoutInputField from './CheckoutInputField';
+import Spinner from '../../UI/Spinner/Spinner';
 
 import LoginContext from '../../../store/loginContext';
 import CartContext from '../../../store/cartContext';
@@ -10,6 +11,11 @@ const Checkout = ({handleClose, cancelCheckout}) => {
   const cartCtx = useContext(CartContext);
 
   const [formValid, setFormValid] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [didSubmit, setDidSubmit] = useState(false);
+
+
+
   const [nameFieldValid, setNameFieldValid] = useState(false);
   const [nameField, setNameField] = useState('');
 
@@ -32,9 +38,15 @@ const Checkout = ({handleClose, cancelCheckout}) => {
   }
 
   const placeOrder = (order) => {
-    fetch('https://react-restaurant-app-d1d55-default-rtdb.firebaseio.com/oreders.json', {
+    setIsSubmitting(true);
+    fetch('https://react-restaurant-app-d1d55-default-rtdb.firebaseio.com/orders.json', {
       method: 'POST',
       body: JSON.stringify(order)
+    })
+    .then((res) => {
+      setIsSubmitting(false);
+      setDidSubmit(true);
+      cartCtx.clearCart();
     });
   }
   const handleSubmit = (e) => {
@@ -53,6 +65,14 @@ const Checkout = ({handleClose, cancelCheckout}) => {
     placeOrder(order);
 
   }
+  if(isSubmitting){
+    return <Spinner />;
+  }
+
+  if(didSubmit){
+    return <h1>The order has been placed successfully</h1>
+  }
+
   return(
     <form onSubmit={handleSubmit} className={styles.form}>
       <CheckoutInputField 

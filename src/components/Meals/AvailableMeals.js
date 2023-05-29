@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import styles from './AvailableMeals.module.css';
 import Card from '../UI/Card/Card';
+import Spinner from '../UI/Spinner/Spinner';
+
 import MealItem from './MealItem/MealItem';
 
 export default function AvailableMeals(){
@@ -45,8 +47,9 @@ export default function AvailableMeals(){
   }
   else if(isLoading){
     return(
-      <section className={styles.spinner}></section>
-    )
+      <Spinner />
+      // <section className={styles.spinner}></section>
+    );
   }
 
   return(
