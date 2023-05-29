@@ -6,7 +6,7 @@ import MealItem from './MealItem/MealItem';
 export default function AvailableMeals(){
   const [meals, setMeals] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [httpError, setHttpError] = useState(null);
   
   useEffect(() => {
     setIsLoading(true);
@@ -28,19 +28,28 @@ export default function AvailableMeals(){
       setIsLoading(false);
       // console.log('end loading');
     })
-    .catch((e) => console.log(e));
+    .catch((e) => {
+      console.log(e);
+      setHttpError(e.message)
+    });
   },[])
 
   const renderedMeals = meals.map((meal) => {
     return <MealItem key={meal.id} meal={meal} />;
   });
   
-  return(
-    <>
-    {isLoading
-      ?
+  if(httpError){
+    return(
+      <Card><h2>{httpError}</h2></Card>
+    );
+  }
+  else if(isLoading){
+    return(
       <section className={styles.spinner}></section>
-      :
+    )
+  }
+
+  return(
       <section className={styles.meals}>
           <Card>
           <ul>
@@ -48,7 +57,5 @@ export default function AvailableMeals(){
           </ul>
         </Card>
       </section>
-    }
-    </>
   );
 }
