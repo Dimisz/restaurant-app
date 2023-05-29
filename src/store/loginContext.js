@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 const LoginContext = React.createContext();
 
 export const LoginContextProvider = (props) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [email, setEmail] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginFormDisplayed, setIsLoginFormDisplayed] = useState(false);
 
   const showLoginFormHandler = () => {
@@ -19,14 +20,18 @@ export const LoginContextProvider = (props) => {
     setIsLoggedIn(false);
   }
 
-  const loginHandler = () => {
+  const loginHandler = (email, pwd) => {
+    // console.log(`email: ${email}`);
+    // console.log(`pwd: ${pwd}`);
     setIsLoggedIn(true);
     setIsLoginFormDisplayed(false);
+    setEmail(email);
   };
 
   return(
     <LoginContext.Provider 
       value={{
+        email: email,
         isLoggedIn: isLoggedIn,
         isLoginFormDisplayed: isLoginFormDisplayed,
         onLogout: logoutHandler,

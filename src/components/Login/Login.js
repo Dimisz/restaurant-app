@@ -61,6 +61,7 @@ const Login = () => {
       dispatch({
         type: CHECK_FORM_VALIDITY
       });
+      // ctx.setEmail(state.)
     }, 500);
 
     return () => {

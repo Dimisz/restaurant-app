@@ -33,7 +33,7 @@ const reducer = (state, action) => {
   }
 }
 
-const CheckoutInputField = ({ fieldType, fieldId, className, label, validationFunc, setFieldValid }) => {
+const CheckoutInputField = ({ fieldType, fieldId, className, label, validationFunc, setFieldValid, setFieldValue }) => {
   const [state, dispatch] = useReducer(reducer, {
     enteredValue: '',
     valueIsValid: false,
@@ -43,7 +43,8 @@ const CheckoutInputField = ({ fieldType, fieldId, className, label, validationFu
 
   useEffect(() => {
     setFieldValid(state.valueIsValid);
-  }, [state.valueIsValid]);
+    setFieldValue(state.enteredValue);
+  }, [state.valueIsValid, state.enteredValue]);
   
   // console.log(`showError: ${state.showError}`);
   // console.log(`wasTouched: ${state.wasTouched}`);
